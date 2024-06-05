@@ -1,0 +1,9 @@
+.columnNameRow{
+    display: flex;
+    width: fit-content;
+    gap: 37px;
+    margin: 1px;
+    position: relative;
+    left: 35px;
+    font-size: 14px;
+}

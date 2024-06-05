@@ -1,0 +1,25 @@
+.board{
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    /* border: 1px solid; */
+    
+}
+.chessBoard{
+    /* display: flex;
+    flex-direction: column; */
+    width: fit-content;
+    border: 1px solid;
+    margin: 20px auto;
+    background-color: #eff1cb;;
+}
+.squareColumn{
+    height: fit-content;
+    width: fit-content;
+}
+
+
+  
+
+
+
