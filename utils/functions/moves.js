@@ -1,5 +1,3 @@
-import initialPositions from '@/public/Data/initialPosition';
-
 
 export function getMarkedArrayWPawn(originalArray, lastMove,squares) { 
   let resultArray;
@@ -124,164 +122,167 @@ export function getMarkedArrayKnight(originalArray,color,squares) {
 }
 
 
-export function getMarkedArrayBishop(originalArray,color,squares) {
-    const possibleMoves = [
-        [1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],
-        [-1,-1],[-2,-2],[-3,-3],[-4,-4],[-5,-5],[-6,-6],[-7,-7],
-        [-1,1],[-2,2],[-3,3],[-4,4],[-5,5],[-6,6],[-7,7],
-        [1,-1],[2,-2],[3,-3],[4,-4],[5,-5],[6,-6],[7,-7]
-    ];
+export function getMarkedArrayBishop(originalArray, color, squares) {
+  const possibleMoves = [
+    [-1, -1], [-1, 1], [1, -1], [1, 1],  // All four diagonal directions
+  ];
 
-    // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
-    const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
-    const row = parseInt(originalArray[1], 10);
+  // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
+  const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+  const row = parseInt(originalArray[1], 10);
 
-    let resultArray = [];
-    for (let move of possibleMoves) {
-      let newColumn = column + move[0];
-      let newRow = row + move[1];
-  
-      // Check if new position is within chessboard bounds
-      if (newColumn < 1 || newColumn > 8 || newRow < 1 || newRow > 8) {
-        continue;
-      }
-  
+  let resultArray = [];
+  for (let move of possibleMoves) {
+    let newColumn = column + move[0];
+    let newRow = row + move[1];
+
+    // Check if new position is within chessboard bounds (1-8)
+    while (newColumn >= 1 && newColumn <= 8 && newRow >= 1 && newRow <= 8) {
       let newColumnChar = String.fromCharCode(newColumn + 'a'.charCodeAt(0) - 1);
       let newPosition = newColumnChar + newRow.toString();
       let piece = squares[newPosition];
-  
+
       if (!piece) {
-        resultArray.push(newPosition);
+        resultArray.push(newPosition); // Empty square
       } else if (piece.includes(color)) {
-        break; // Stop if piece is of the same color
+        break; // Stop if encountering own piece
       } else {
-        resultArray.push(newPosition);
-        break; // Stop if piece is of different color
+        resultArray.push(newPosition); // Opponent's piece (capture)
+        break; // Stop after capture
       }
+
+      newColumn += move[0]; // Move to the next diagonal position
+      newRow += move[1];
     }
-  
-    return resultArray;
   }
 
+  return resultArray;
+}
 
-export function getMarkedArrayRook(originalArray, color,squares) {
-    const possibleMoves = [
-      [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
-      [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0],
-      [-1, 0], [-2, 0], [-3, 0], [-4, 0], [-5, 0], [-6, 0], [-7, 0],
-      [0, -1], [0, -2], [0, -3], [0, -4], [0, -5], [0, -6], [0, -7],
-    ];
-  
-    // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
-    const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
-    const row = parseInt(originalArray[1], 10);
-  
-    let resultArray = [];
-    for (let move of possibleMoves) {
-      let newColumn = column + move[0];
-      let newRow = row + move[1];
-  
-      // Check if new position is within chessboard bounds
-      if (newColumn < 1 || newColumn > 8 || newRow < 1 || newRow > 8) {
-        continue;
-      }
-  
+
+export function getMarkedArrayRook(originalArray, color, squares) {
+  const possibleMoves = [
+    [0, 1],  // Up (rank)
+    [1, 0],  // Right (file)
+    [0, -1], // Down (rank)
+    [-1, 0], // Left (file)
+  ];
+
+  // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
+  const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+  const row = parseInt(originalArray[1], 10);
+
+  let resultArray = [];
+  for (let move of possibleMoves) {
+    let newColumn = column + move[0];
+    let newRow = row + move[1];
+
+    // Check if new position is within chessboard bounds (1-8)
+    while (newColumn >= 1 && newColumn <= 8 && newRow >= 1 && newRow <= 8) {
       let newColumnChar = String.fromCharCode(newColumn + 'a'.charCodeAt(0) - 1);
       let newPosition = newColumnChar + newRow.toString();
       let piece = squares[newPosition];
-  
+
       if (!piece) {
-        resultArray.push(newPosition);
+        resultArray.push(newPosition); // Empty square
       } else if (piece.includes(color)) {
-        break; // Stop if piece is of the same color
+        break; // Stop if encountering own piece
       } else {
-        resultArray.push(newPosition);
-        break; // Stop if piece is of different color
+        resultArray.push(newPosition); // Opponent's piece (capture)
+        break; // Stop after capture
       }
+
+      newColumn += move[0]; // Move to the next position in the same direction
+      newRow += move[1];
     }
-  
-    return resultArray;
   }
-  
+
+  return resultArray;
+}
 
 
 
-export function getMarkedArrayQueen(originalArray,color,squares) {
-    const possibleMoves = [
-        [0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],
-        [1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],
-        [-1,0],[-2,0],[-3,0],[-4,0],[-5,0],[-6,0],[-7,0],
-        [0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[0,-7],
-        [1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],
-        [-1,-1],[-2,-2],[-3,-3],[-4,-4],[-5,-5],[-6,-6],[-7,-7],
-        [1,-1],[2,-2],[3,-3],[4,-4],[5,-5],[6,-6],[7,-7],
-        [-1,1],[-2,2],[-3,3],[-4,4],[-5,5],[-6,6],[-7,7]
-    ];
 
-    // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
-    const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
-    const row = parseInt(originalArray[1], 10);
+export function getMarkedArrayQueen(originalArray, color, squares) {
+  const possibleMoves = [
+    [0, 1],  // Up (rank)
+    [1, 0],  // Right (file)
+    [0, -1], // Down (rank)
+    [-1, 0], // Left (file)
+    [1, 1],  // Up-right diagonal
+    [1, -1], // Up-left diagonal
+    [-1, 1], // Down-right diagonal
+    [-1, -1], // Down-left diagonal
+  ];
 
-    let resultArray = [];
-    for (let move of possibleMoves) {
-      let newColumn = column + move[0];
-      let newRow = row + move[1];
-  
-      // Check if new position is within chessboard bounds
-      if (newColumn < 1 || newColumn > 8 || newRow < 1 || newRow > 8) {
-        continue;
-      }
-  
+  // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
+  const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+  const row = parseInt(originalArray[1], 10);
+
+  let resultArray = [];
+  for (let move of possibleMoves) {
+    let newColumn = column + move[0];
+    let newRow = row + move[1];
+
+    // Check if new position is within chessboard bounds (1-8)
+    while (newColumn >= 1 && newColumn <= 8 && newRow >= 1 && newRow <= 8) {
       let newColumnChar = String.fromCharCode(newColumn + 'a'.charCodeAt(0) - 1);
       let newPosition = newColumnChar + newRow.toString();
       let piece = squares[newPosition];
-  
+
       if (!piece) {
-        resultArray.push(newPosition);
+        resultArray.push(newPosition); // Empty square
       } else if (piece.includes(color)) {
-        break; // Stop if piece is of the same color
+        break; // Stop if encountering own piece
       } else {
-        resultArray.push(newPosition);
-        break; // Stop if piece is of different color
+        resultArray.push(newPosition); // Opponent's piece (capture)
+        break; // Stop after capture
       }
+
+      newColumn += move[0]; // Move to the next position in the same direction
+      newRow += move[1];
     }
-  
-    return resultArray;
   }
 
+  return resultArray;
+}
 
-export function getMarkedArrayKing(originalArray,color,squares) {
-    const possibleMoves = [
-        [1,1],[0,1],[-1,-1],[1,0],[-1,0],[0,-1],[-1,1],[1,-1]
-    ];
 
-    // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
-    const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
-    const row = parseInt(originalArray[1], 10);
+export function getMarkedArrayKing(originalArray, color, squares) {
+  const possibleMoves = [
+    [1, 1],  // Up-right
+    [1, 0],  // Right
+    [1, -1], // Down-right
+    [0, -1], // Down
+    [-1, -1], // Down-left
+    [-1, 0],  // Left
+    [-1, 1], // Up-left
+    [0, 1],  // Up
+  ];
 
-    let resultArray = [];
-    for (let move of possibleMoves) {
-      let newColumn = column + move[0];
-      let newRow = row + move[1];
-  
-      // Check if new position is within chessboard bounds
-      if (newColumn < 1 || newColumn > 8 || newRow < 1 || newRow > 8) {
-        continue;
-      }
-  
-      let newColumnChar = String.fromCharCode(newColumn + 'a'.charCodeAt(0) - 1);
-      let newPosition = newColumnChar + newRow.toString();
-      let piece = squares[newPosition];
-  
-      if (!piece) {
-        resultArray.push(newPosition);
-      } else if (piece.includes(color)) {
-        break; // Stop if piece is of the same color
-      } else {
-        resultArray.push(newPosition);
-        break; // Stop if piece is of different color
-      }
+  // Convert the letter at index 0 to a number (e.g., 'a' -> 1, 'b' -> 2)
+  const column = originalArray[0].charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+  const row = parseInt(originalArray[1], 10);
+
+  let resultArray = [];
+  for (let move of possibleMoves) {
+    let newColumn = column + move[0];
+    let newRow = row + move[1];
+
+    // Check if new position is within chessboard bounds (1-8)
+    if (newColumn < 1 || newColumn > 8 || newRow < 1 || newRow > 8) {
+      continue;
     }
-  
-    return resultArray;
+
+    let newColumnChar = String.fromCharCode(newColumn + 'a'.charCodeAt(0) - 1);
+    let newPosition = newColumnChar + newRow.toString();
+    let piece = squares[newPosition];
+
+    // Check for valid king move (empty square or opponent's piece)
+    if (!piece || (piece !== color && piece !== ' ')) {
+      resultArray.push(newPosition);
+    }
   }
+
+  return resultArray;
+}

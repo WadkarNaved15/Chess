@@ -48,7 +48,6 @@ const Chessboard = () => {
   const handleHighlight = (e, square_id) => {
     if (typeof squares[square_id] === "string") {
       let player = squares[square_id].split("").slice(0,5).join("")
-      console.log(player)
       if (squares[square_id] && player === currentPlayer) {
         handle.handleHighlight(e, square_id, setHighlightedSquareId, setMarkSquareIds, lastMove,squares);
       } else {
