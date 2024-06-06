@@ -1,16 +1,16 @@
 import * as moves from '@/utils/functions/moves'
 
-export function handleHighlight (e, square_id,setHighlightedSquareId, setmarkSquareIds,lastMove,squares) {
+export function handleHighlight (e, square_id,setHighlightedSquareId, setmarkSquareIds,lastMove,squares,setSquares) {
     if (e.target.tagName.toLowerCase() === "img") {
       setHighlightedSquareId([square_id]);
       let pieceName = e.target.getAttribute("piece_name");
         let arr = square_id.split("");
         switch(true) {
             case pieceName.includes("whitePawn"):
-                setmarkSquareIds(moves.getMarkedArrayWPawn(arr,lastMove,squares));
+                setmarkSquareIds(moves.getMarkedArrayWPawn(arr,lastMove,squares,setSquares));
                 break;
             case pieceName.includes("blackPawn"):
-                setmarkSquareIds(moves.getMarkedArrayBPawn(arr,lastMove,squares));
+                setmarkSquareIds(moves.getMarkedArrayBPawn(arr,lastMove,squares,setSquares));
                 break;
             case pieceName.includes("blackKnight"):
                 setmarkSquareIds(moves.getMarkedArrayKnight(arr,"black",squares))

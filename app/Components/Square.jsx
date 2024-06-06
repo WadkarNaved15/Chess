@@ -21,6 +21,7 @@ const Square = ({
       onDragOver={(e) => onDragOver(e)}
       onDrop={(e) => onDrop(e, square_id)}
       onMouseDown={onMouseDown}
+      onClick={onClick}
     >
       {marked && <div className={`${piece ? 'circlemark' : 'marked'}`}></div>}
       {piece && <Piece piece_name={piece} current_position={square_id} onDragStart={onDragStart} />}

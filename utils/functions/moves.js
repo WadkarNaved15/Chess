@@ -1,5 +1,5 @@
 
-export function getMarkedArrayWPawn(originalArray, lastMove,squares) { 
+export function getMarkedArrayWPawn(originalArray, lastMove,squares,setSquares) { 
   let resultArray;
   let firstArray = [...originalArray]; 
   firstArray[1] = (parseInt(originalArray[1], 10) + 1).toString(); 
@@ -16,13 +16,16 @@ export function getMarkedArrayWPawn(originalArray, lastMove,squares) {
     leftDiagonal[1] = firstArray[1]
     leftDiagonal[0] = String.fromCharCode(leftDiagonal[0]) 
     let leftString = leftDiagonal.join("")
-    console.log(leftString)
     
-  if (originalArray[1] === '2') {
-     resultArray = [firstString, secondString];
-     } else {
-       resultArray = [firstString]; 
-      } 
+    if (originalArray[1] === '2' && !squares[firstString] && !squares[secondString]) {
+      resultArray = [firstString, secondString];
+      } else if(originalArray[1] === '2' && squares[secondString]){
+        resultArray = [firstString]; 
+       }else if(squares[firstString]){
+         resultArray=[]
+       }else{
+         resultArray=[firstString]
+       }
   if(squares[rightString]){
   if(squares[rightString].includes("black")){
       resultArray.push(rightString)
@@ -38,7 +41,7 @@ export function getMarkedArrayWPawn(originalArray, lastMove,squares) {
       const pawnFile = originalArray[0];
       const lastMoveFile = lastMoveTo[0];
        if (Math.abs(pawnFile.charCodeAt(0) - lastMoveFile.charCodeAt(0)) === 1) { 
-        const enPassantSquare = lastMoveTo[0] + '6'; 
+        const enPassantSquare = lastMoveTo[0] + '6';
         resultArray.push(enPassantSquare);
        }
       }
@@ -47,7 +50,7 @@ export function getMarkedArrayWPawn(originalArray, lastMove,squares) {
       }
 
   
-      export function getMarkedArrayBPawn(originalArray, lastMove,squares) { 
+      export function getMarkedArrayBPawn(originalArray, lastMove,squares,setSquares) { 
         let resultArray;
         let firstArray = [...originalArray]; 
         firstArray[1] = (parseInt(originalArray[1], 10) - 1).toString(); 
@@ -64,13 +67,17 @@ export function getMarkedArrayWPawn(originalArray, lastMove,squares) {
           leftDiagonal[1] = firstArray[1]
           leftDiagonal[0] = String.fromCharCode(leftDiagonal[0]) 
           let leftString = leftDiagonal.join("")
-          console.log(leftString)
+
           
-        if (originalArray[1] === '7') {
+        if (originalArray[1] === '7' && !squares[firstString] && !squares[secondString]) {
            resultArray = [firstString, secondString];
-           } else {
+           } else if(originalArray[1] === '7' && squares[secondString]){
              resultArray = [firstString]; 
-            } 
+            }else if(squares[firstString]){
+              resultArray=[]
+            }else{
+              resultArray=[firstString]
+            }
         if(squares[rightString]){
         if(squares[rightString].includes("white")){
             resultArray.push(rightString)

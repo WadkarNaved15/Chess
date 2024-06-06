@@ -22,7 +22,7 @@ const initialPositions  ={
     "d3": null,
     "e3": null,
     "f3": null,
-    "g3": "blackPawn2",
+    "g3": null,
     "h3": null,
     "a4": null,
     "b4": null,
